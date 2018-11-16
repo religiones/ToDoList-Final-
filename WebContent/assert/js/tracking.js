@@ -1,6 +1,120 @@
-/**************************燃尽图**************************/
-burnout = document.getElementById('burnout-map');
+var myBurnout;
+$(document).ready(function(){
+    var burnout = document.getElementById('burnout-map');
+    burnout.style.height = burnout.clientWidth * 0.618 + "px";
+    myBurnout = echarts.init(burnout);
+    myBurnout.setOption(optionBurnout);
+    $("#burnout-map div").css({"overflow":"scroll"});
+    /*从session中获取任务数据*/
+    var tasks = JSON.parse(sessionStorage.getItem("tasks"));
+    GetWeekTask(tasks);
+    RenderData(tasks);
+    window.addEventListener("resize", function () {
+        burnout.style.height = burnout.clientWidth * 0.618 + "px";
+        myBurnout.resize();
+    });
+    
+});
 
+//比较日期大小函数 date1<date2 时返回true
+function compareDate(date1,date2){
+    var oDate1 = new Date(date1);
+    var oDate2 = new Date(date2);
+    if(oDate1.getTime() > oDate2.getTime()){
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var weekTask = Array(7).fill({
+    'finished':0,
+    'overdue':0
+});
+var finishedArray = Array(7).fill(0);
+var overdueArray = Array(7).fill(0);
+//渲染数据
+function RenderData(tasks){
+    /*检索任务状况*/
+    var Total = tasks.Task.length;
+    var finished = 0; 
+    var overdue = 0;
+    for(var i = 0;i<Total;i++){  
+        if(tasks.Task[i].task_finish_flag == 1){
+            finished = finished + 1; 
+        }
+        if(tasks.Task[i].task_overdue == 1){
+            overdue = overdue + 1;   
+        }
+    }
+    var plan = new Vue({
+        el:'.task-description',
+        data: {
+            task : tasks,
+            taskTotal : Total,
+            finishedTotal : finished,
+            unfinishedTotal : (Total-finished),
+            overdueTotal : overdue
+        }
+    });
+}
+
+//获取一周的任务情况
+function GetWeekTask(tasks){
+    //对任务进行处理，先找出已完成的任务
+    var task = tasks.Task;
+    var finishedTask = [];
+    for(index in task){
+        if(task[index].task_finish_flag == 1){
+            finishedTask.push(task[index]);
+        }
+    }
+    var date = new Date(); 
+    var week = new Date(date).getDay();  //获取星期
+    var myDate =  date.getDate()-week;   //获取日期
+    for(var i = 0;i<=week;i++){     
+        var localDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+(myDate+i);
+        var finish = 0;
+        var overdue = 0;
+        //从已完成的任务数组中检索满足条件的任务
+        for(index in finishedTask){
+            var finish_date = finishedTask[index].task_finish_time.split(" ");
+            //选取当天完成的任务量
+            if(finish_date[0]==localDate){
+                finish++;
+                if(finishedTask[index].task_overdue == 1){
+                    overdue++;
+                }
+            }
+
+        }
+        weekTask[i]={
+            'finished':finish,
+            'overdue':overdue
+        }
+    }
+    finishedArray = [weekTask[0].finished,weekTask[1].finished,weekTask[2].finished,weekTask[3].finished,weekTask[4].finished,weekTask[5].finished,weekTask[6].finished];
+    overdueArray = [weekTask[0].overdue,weekTask[1].overdue,weekTask[2].overdue,weekTask[3].overdue,weekTask[4].overdue,weekTask[5].overdue,weekTask[6].overdue];
+    myBurnout.setOption({
+        series : [
+            {
+                name:'完成任务量',
+                type:'line',
+                // stack: '总量',
+                areaStyle: {normal: {}},
+                data:finishedArray
+            },
+            {
+                name:'超时任务量',
+                type:'line',
+                // stack: '总量',
+                areaStyle: {normal: {}},
+                data:overdueArray
+            }
+        ]
+    });
+}
+/**************************燃尽图**************************/
 optionBurnout = {
     title: {
         text: '任务燃尽'
@@ -15,7 +129,7 @@ optionBurnout = {
         }
     },
     legend: {
-        data:['理想燃尽','实际工作量']
+        data:['完成任务量','超时任务量']
     },
     toolbox: {
         feature: {
@@ -32,7 +146,7 @@ optionBurnout = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : ['周日','周一','周二','周三','周四','周五','周六']
         }
     ],
     yAxis : [
@@ -42,33 +156,21 @@ optionBurnout = {
     ],
     series : [
         {
-            name:'理想燃尽',
+            name:'完成任务量',
             type:'line',
             // stack: '总量',
             areaStyle: {normal: {}},
-            data:[100, 83 , 66, 49, 32, 15, 0]
+            data:[]
         },
         {
-            name:'实际工作量',
+            name:'超时任务量',
             type:'line',
             // stack: '总量',
             areaStyle: {normal: {}},
-            data:[100, 96, 80, 70, 50, 40,0]
+            data:[]
         }
     ]
 };
-
-$(document).ready(function(){
-    burnout.style.height = burnout.clientWidth * 0.618 + "px";
-    myBurnout = echarts.init(burnout);
-    myBurnout.setOption(optionBurnout);
-    $("#burnout-map div").css({"overflow":"scroll"});
-});
-
-window.addEventListener("resize", function () {
-    burnout.style.height = burnout.clientWidth * 0.618 + "px";
-    myBurnout.resize();
-});
 
 /********************甘特图***************** */
 gantt = document.getElementById('gantt-map');
@@ -149,5 +251,7 @@ window.addEventListener("resize", function () {
     gantt.style.height = gantt.clientWidth * 0.618 + "px";
     myGantt.resize();
 });
+
+
 
 

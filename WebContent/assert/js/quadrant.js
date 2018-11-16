@@ -68,8 +68,10 @@ $(document).ready(function(){
 						var modal_message = M.Modal.getInstance($('#modal-message').modal());
 						modal_message.open();
 					}
+					
 				})
 			}
+			// location.reload();
 		})
 	})
 

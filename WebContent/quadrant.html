@@ -60,7 +60,7 @@
                 <div id="prio-1" class="tasks-pannel" style="background-color:rgb(241, 148, 148)">
                     <div class="pannel-title" style="background-color:rgb(241, 85, 85)">很重要-很紧急</div>
                     <ul id="prio-1-list" class="pannel-list">
-                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='很重要-很紧急' && task.task_list_fk == list.list_id">
+                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='很重要-很紧急' && task.task_list_fk == list.list_id && task.task_finish_flag == 0">
                             <p v-on:click="ShowTask(task.task_id,task.task_deadline)"><i class="fa fa-square-o"></i><a href="task_detail.html">&nbsp; {{task.task_name}}</a></p>
                         </li>
                     </ul>
@@ -68,7 +68,7 @@
                 <div id="prio-2" class="tasks-pannel"  style="background-color:rgb(241, 232, 148)">
                     <div class="pannel-title"  style="background-color:rgb(243, 229, 99)">很重要-不紧急</div>
                     <ul id="prio-2-list" class="pannel-list">
-                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='很重要-不紧急' && task.task_list_fk == list.list_id">
+                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='很重要-不紧急' && task.task_list_fk == list.list_id && task.task_finish_flag == 0">
                             <p v-on:click="ShowTask(task.task_id,task.task_deadline)"><i class="fa fa-square-o"></i><a href="task_detail.html">&nbsp; {{task.task_name}}</a></p>
                         </li>
                     </ul>
@@ -76,7 +76,7 @@
                 <div id="prio-3" class="tasks-pannel" style="background-color:rgb(153, 230, 134)">
                     <div class="pannel-title" style="background-color:rgb(132, 230, 107)">不重要-很紧急</div>
                     <ul id="prio-3-list" class="pannel-list">
-                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='不重要-很紧急' && task.task_list_fk == list.list_id">
+                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='不重要-很紧急' && task.task_list_fk == list.list_id && task.task_finish_flag == 0">
                             <p v-on:click="ShowTask(task.task_id,task.task_deadline)"><i class="fa fa-square-o"></i><a href="task_detail.html">&nbsp; {{task.task_name}}</a></p>
                         </li>
                     </ul>
@@ -84,7 +84,7 @@
                 <div id="prio-4" class="tasks-pannel" style="background-color:rgb(134, 200, 230)">
                     <div class="pannel-title" style="background-color:rgb(73, 174, 221)">不重要-不紧急</div>
                     <ul id="prio-4-list" class="pannel-list">
-                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='不重要-不紧急' && task.task_list_fk == list.list_id">
+                        <li class="pannel-list-item" v-for="task in tasks.Task" v-if="task.task_priority ==='不重要-不紧急' && task.task_list_fk == list.list_id && task.task_finish_flag == 0">
                             <p v-on:click="ShowTask(task.task_id,task.task_deadline)"><i class="fa fa-square-o"></i><a href="task_detail.html">&nbsp; {{task.task_name}}</a></p>
                         </li>
                     </ul>

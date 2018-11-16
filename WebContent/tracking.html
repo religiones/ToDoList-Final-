@@ -72,12 +72,12 @@
         
 
         <div class="page-container">
-            <div class="list-description">
-                <p id="list-name">暑期计划</p>
-                <p class="static-item" id="list-total">总任务数<br><span>20</span></p>
-                <p class="static-item" id="finished-total">完成数<br><span>12</span></p>
-                <p class="static-item" id="unfinished-total">未完成数<br><span>5</span></p>
-                <p class="static-item" id="overdue-total" style="border:none;">过期数<br><span>3</span></p>
+            <div class="task-description">
+                <p id="task-name">我的计划</p>
+                <p class="static-item" id="task-total">总任务数<br><span>{{taskTotal}}</span></p>
+                <p class="static-item" id="finished-total">完成数<br><span>{{finishedTotal}}</span></p>
+                <p class="static-item" id="unfinished-total">未完成数<br><span>{{unfinishedTotal}}</span></p>
+                <p class="static-item" id="overdue-total" style="border:none;">过期数<br><span>{{overdueTotal}}</span></p>
             </div>
 
             <div id="burnout-container" class="graph-container">
