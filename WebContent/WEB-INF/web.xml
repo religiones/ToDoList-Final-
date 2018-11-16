@@ -35,7 +35,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>tasks</servlet-name>
-    <servlet-class>com.ToDoList.control.Tasks</servlet-class>
+    <servlet-class>com.ToDoList.control.tasks</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>tasks</servlet-name>
